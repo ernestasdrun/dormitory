@@ -1,10 +1,9 @@
+const { Int32 } = require('mongodb');
 const mongoose = require('mongoose');
 
 const connection = require("./../mongo");
 
-const Room = require('../schemas/room');
-
-const user = new mongoose.Schema({
+const employee = new mongoose.Schema({
     firstName: {
         type: String,
         required: true
@@ -14,7 +13,7 @@ const user = new mongoose.Schema({
         required: true
     },
     userName: {
-        type: String,
+        type: Number,
         required: true
     },
     password: {
@@ -29,17 +28,13 @@ const user = new mongoose.Schema({
         type: String,
         required: true
     },
-    notPaid: {
-        type: Number,
+    privilleges: {
+        type: String,
+        enum : ['administration','watcher'],
         required: true
     },
-    room_id: {
-        type: mongoose.Schema.ObjectId,
-        ref: Room,
-        index: true
-    }
 })
 
-const User = connection.model('User', user);
+const Employee = connection.model('Employee', employee);
 
-module.exports = User;
+module.exports = Employee;

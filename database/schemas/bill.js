@@ -5,11 +5,23 @@ const connection = require("../mongo");
 const User = require('../schemas/user');
 
 const bill = new mongoose.Schema({
-    date: {
+    dateCreated: {
         type: Date,
         required: true
     },
-    amount: {
+    deadlineDate: {
+        type: Date,
+        required: true
+    },
+    newAmount: {
+        type: Number,
+        required: true
+    },
+    miscAmount: {
+        type: Number,
+        required: true
+    },
+    totalAmount: {
         type: Number,
         required: true
     },
