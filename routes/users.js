@@ -10,6 +10,10 @@ const Employee = require('../database/schemas/employee');
 router.use(cors({origin: 'http://localhost:3000'}));
 
 
+
+
+
+
 router.post('/login_:userName', function(req, res, next) { 
   console.log("testing: " + req.body.userType);
   if (req.body.userType == 10){
@@ -63,7 +67,7 @@ router.post('/register', (req, res) => {
     password: req.body.password,
     email: req.body.email,
     phoneNumber: req.body.phoneNumber,
-    notPaid: req.body.notPaid,
+    notPaid: 0,
     room_id: null
   });
   user.save().then(result => {
@@ -115,6 +119,17 @@ router.get('/hasRoom_:userName', (req, res) => {
     } else {
       res.status(200).send('0');
     }
+  }).catch(err => res.status(500).json({
+    error: err
+  }))
+});
+
+router.get('/info_:userName', (req, res) => {
+  const user = req.params.userName;
+  User.find({userName: user}).select({"_id": 0, "password": 0, "notPaid": 0, "__v": 0}).exec().then(result => {
+    console.log(result[0].firstName);
+    //res.setHeader('Content-Type', 'application/json');
+    res.status(200).type('json').send(result);
   }).catch(err => res.status(500).json({
     error: err
   }))

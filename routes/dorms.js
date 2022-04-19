@@ -25,5 +25,14 @@ router.post('/create', (req, res) => {
     })
 });
 
+router.get('/get', (req, res) => {
+  Dorm.find().exec().then(result => {
+    console.log(result);
+    res.status(200).json(result);
+  })
+  .catch(err => console.log(err));
+});
+
+
 
 module.exports = router;
