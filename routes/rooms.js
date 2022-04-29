@@ -16,14 +16,18 @@ router.post('/create', (req, res) => {
       //_id: new mongoose.Types.ObjectId(),
       number: req.body.number, //strin
       maxResidents: req.body.maxResidents, //number
+      residents: 0,
       floor_id: req.body.floor_id, // object id
     });
     room.save().then(result => {
       console.log(result)
+      res.status(200).json({
+        message: "handling request",
+        createdRoom: room
+      })
     }).catch(err => console.log(err));
-    res.status(200).json({
-      message: "handling request",
-      createdRoom: room
+    res.status(400).json({
+      message: "handling request failed"
     })
   });
 

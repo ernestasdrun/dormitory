@@ -13,11 +13,9 @@ const reservation = new mongoose.Schema({
     },
     startingDate: {
         type: Date,
-        required: true
     },
     endDate: {
         type: Date,
-        required: true
     },
     status: {
         type: String,
@@ -38,7 +36,6 @@ const reservation = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.ObjectId,
         ref: User,
-        required: true,
         index: true
     }
 })

@@ -9,9 +9,16 @@ const room = new mongoose.Schema({
         type: String,
         required: true
     },
+
     maxResidents: {
         type: Number,
         enum : [1, 2, 3],
+        required: true
+    },
+
+    residents: {
+        type: Number,
+        enum : [0, 1, 2, 3],
         required: true
     },
 
