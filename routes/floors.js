@@ -29,7 +29,6 @@ router.post('/create', (req, res) => {
   router.get('/get_:dorm', (req, res) => {
     Dorm.find({dormNumber: req.params.dorm}).exec().then(result => {
       Floor.find({dorm_id: result[0]._id}).exec().then(result => {
-        console.log(result);
         res.status(200).json(result);
       })
     })

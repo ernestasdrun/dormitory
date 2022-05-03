@@ -11,6 +11,14 @@ const reservation = new mongoose.Schema({
         type: Date,
         required: true
     },
+    firstName: {
+        type: String,
+        required: true
+    },
+    surname: {
+        type: String,
+        required: true
+    },
     startingDate: {
         type: Date,
     },
@@ -19,12 +27,24 @@ const reservation = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["processing", "complete", "canceled"],
+        enum: ["Nepatvirtinta", "Sutarties pasirašymas", "Laukiama depozito", "Apgyvendinimas", "Įvikdyta", "Atšaukta"],
         required: true
     },
     type: {
         type: String,
         enum: ["firstTime", "onHold"],
+        required: true
+    },
+    roomNum: {
+        type: String,
+        required: true
+    },
+    floorNum: {
+        type: Number,
+        required: true
+    },
+    dormNum: {
+        type: Number,
         required: true
     },
     room_id: {
@@ -36,6 +56,7 @@ const reservation = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.ObjectId,
         ref: User,
+        required: true,
         index: true
     }
 })

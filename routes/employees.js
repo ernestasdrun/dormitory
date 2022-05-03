@@ -16,7 +16,6 @@ router.post('/login_:userName', function(req, res, next) {
             message: "user not found"
           })
         }
-        //console.log("Selected user: " + selected.userName);
         else if (selected.userName == req.body.userName && selected.password == req.body.password) {
           res.status(200).send(true)
         }
@@ -36,7 +35,6 @@ router.post('/login_:userName', function(req, res, next) {
   });
 
   router.post('/register', (req, res) => {
-    console.log(req.body.email);
     const employee = new Employee({
       //_id: new mongoose.Types.ObjectId(),
       firstName: req.body.firstName,

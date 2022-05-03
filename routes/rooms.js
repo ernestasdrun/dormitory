@@ -20,7 +20,6 @@ router.post('/create', (req, res) => {
       floor_id: req.body.floor_id, // object id
     });
     room.save().then(result => {
-      console.log(result)
       res.status(200).json({
         message: "handling request",
         createdRoom: room
@@ -36,10 +35,17 @@ router.post('/create', (req, res) => {
     Dorm.find({dormNumber: req.params.dorm}).exec().then(result => {
       Floor.find({dorm_id: result[0]._id, floor: req.params.floor}).exec().then(result => {      
         Room.find({floor_id: result[0]._id, maxResidents: req.params.residents}).exec().then(result => {
-        console.log(result);
         res.status(200).json(result);
       })
     })
+    })
+    .catch(err => console.log(err));
+  });
+
+
+  router.get('/getRoom/:id', (req, res) => {
+    Room.find({_id: req.params.id}).exec().then(result => {
+      res.status(200).json(result);
     })
     .catch(err => console.log(err));
   });
