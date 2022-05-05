@@ -17,6 +17,7 @@ router.post('/create', (req, res) => {
       number: req.body.number, //strin
       maxResidents: req.body.maxResidents, //number
       residents: 0,
+      roomPrice: 0,
       floor_id: req.body.floor_id, // object id
     });
     room.save().then(result => {
@@ -48,6 +49,22 @@ router.post('/create', (req, res) => {
       res.status(200).json(result);
     })
     .catch(err => console.log(err));
+  });
+
+  router.post('/updatePrice', (req, res) => {
+    Room.updateMany({maxResidents: req.body.maxResidents}, {$set: {roomPrice: req.body.roomPrice}}).exec().then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => console.log(err));
+  });
+
+
+  router.post('/updateCountById/:id', (req, res) => {
+    Room.updateOne({_id: req.params.id}, {$inc: {residents: req.body.residents}}).exec().then(result => {
+      res.status(200).json(result);
+    }).catch(err => res.status(500).json({
+      error: err
+    }))
   });
 
 

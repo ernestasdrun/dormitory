@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const connection = require("../mongo");
 const User = require('../schemas/user');
+const BillFee = require('../schemas/billFee');
 
 const bill = new mongoose.Schema({
     dateCreated: {
@@ -13,16 +14,33 @@ const bill = new mongoose.Schema({
         type: Date,
         required: true
     },
-    newAmount: {
-        type: Number,
-        required: true
-    },
-    miscAmount: {
-        type: Number,
-        required: true
-    },
+    /*fees: [{
+        type: mongoose.Schema.ObjectId,
+        ref: BillFee,
+        index: true
+    }],*/
+    fees: [{
+        description: {
+            type: String,
+            enum: ['base', 'fixes', 'other', 'deposit'],
+            required: true
+        },
+        amount: {
+            type: Number,
+            required: true
+        }
+    }],
     totalAmount: {
         type: Number,
+        required: true
+    },
+    isPaid: {
+        type: Boolean,
+        required: true
+    },
+    type: {
+        type: String,
+        enum : ['deposit','bill'],
         required: true
     },
     user_id: {

@@ -21,7 +21,10 @@ const room = new mongoose.Schema({
         enum : [0, 1, 2, 3],
         required: true
     },
-
+    roomPrice: {
+        type: Number,
+        required: true
+    },
     floor_id: {
         type: mongoose.Schema.ObjectId,
         ref: Floor,

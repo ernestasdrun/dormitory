@@ -98,6 +98,15 @@ router.post('/update_:userName', (req, res) => {
 });
 
 
+router.post('/updateById/:id', (req, res) => {
+  User.updateOne({_id: req.params.id}, {$set: {room_id: req.body.room_id}}).exec().then(result => {
+    res.status(200).json(result);
+  }).catch(err => res.status(500).json({
+    error: err
+  }))
+});
+
+
 router.get('/hasRoom_:userName', (req, res) => {
   const user = req.params.userName;
   User.find({userName: user, room_id: null}).exec().then(result => {
