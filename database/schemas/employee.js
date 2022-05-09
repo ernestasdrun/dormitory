@@ -25,7 +25,7 @@ const employee = new mongoose.Schema({
         required: true
     },
     phoneNumber: {
-        type: String,
+        type: Number,
         required: true
     },
     privilleges: {

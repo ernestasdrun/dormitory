@@ -14,11 +14,6 @@ const bill = new mongoose.Schema({
         type: Date,
         required: true
     },
-    /*fees: [{
-        type: mongoose.Schema.ObjectId,
-        ref: BillFee,
-        index: true
-    }],*/
     fees: [{
         description: {
             type: String,
@@ -35,6 +30,10 @@ const bill = new mongoose.Schema({
         required: true
     },
     isPaid: {
+        type: Boolean,
+        required: true
+    },
+    isSent: {
         type: Boolean,
         required: true
     },

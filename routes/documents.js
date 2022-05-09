@@ -66,9 +66,6 @@ router.get('/getFullFile/:id', (req, res) => {
 router.post('/update', (req, res) => {
   const id = req.body._id;
   const updateOps = {};
-  //for (const ops of req.body) {
-  //  updateOps[ops.propName] = ops.value;
-  //}
   for (const key of Object.keys(req.body)) {
     updateOps[key] = req.body[key];
   }

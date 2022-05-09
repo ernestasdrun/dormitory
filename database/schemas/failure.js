@@ -8,6 +8,10 @@ const Floor = require('../schemas/floor');
 const Dorm = require('../schemas/dorm');
 
 const failure = new mongoose.Schema({
+    image: {
+        type: Buffer,
+        required: true,
+    },
     status: {
         type: String,
         enum: ["processing", "completed", "canceled"],
@@ -17,19 +21,11 @@ const failure = new mongoose.Schema({
         type: String,
         required: true,
     },
-    dorm_id: {
-        type: mongoose.Schema.ObjectId,
-        ref: Dorm,
+    comment: {
+        type: String,
         required: true,
-        index: true
     },
-    floor_id: {
-        type: mongoose.Schema.ObjectId,
-        ref: Floor,
-        required: true,
-        index: true
-    },
-    user_id: {
+    room_id: {
         type: mongoose.Schema.ObjectId,
         ref: User,
         required: true,

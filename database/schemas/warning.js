@@ -17,10 +17,6 @@ const warning = new mongoose.Schema({
         type: Date,
         required: true
     },
-    isActive: {
-        type: Boolean,
-        required: true
-    },
     user_id: {
         type: mongoose.Schema.ObjectId,
         ref: User,

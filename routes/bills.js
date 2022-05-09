@@ -5,8 +5,10 @@ const mongoose = require('mongoose');
 var cors = require('cors');
 
 const Bill = require("../database/schemas/bill");
-const Fee = require("../database/schemas/billFee");
 const Room = require('../database/schemas/room');
+const User = require('../database/schemas/user');
+const Floor = require("../database/schemas/floor");
+const Dorm = require('../database/schemas/dorm');
 
 router.use(cors({origin: 'http://localhost:3000'}));
 
@@ -17,9 +19,6 @@ router.use(express.static("public"));
 router.use(express.json());
 
 
-
-
-
 const calculateOrderAmount = (items) => {
   // Replace this constant with a calculation of the order's amount
   // Calculate the order total on the server to prevent
@@ -28,8 +27,6 @@ const calculateOrderAmount = (items) => {
     return result[0].roomPrice * 2;
   }).catch(err => console.log("error " + err));
 };
-
-
 
 router.post("/depositPayment", async (req, res) => {
   const { items } = req.body;
@@ -52,30 +49,29 @@ router.post("/depositPayment", async (req, res) => {
 
 
 
-
-
-
+function createBill(req, res) {
+  let date_ob = new Date();
+  const bill = new Bill({
+    dateCreated: date_ob,
+    deadlineDate: date_ob,
+    totalAmount: 0,
+    isPaid: false,
+    isSent: false,
+    type: "bill",
+    user_id: req.body.user_id
+  });
+  bill.save().then(result => {
+    console.log(result)
+  }).catch(err => console.log(err));
+  res.status(200).json({
+    message: "handling request",
+    createdBill: bill
+  })
+}
 
 router.post('/create', (req, res) => {
-  let date_ob = new Date();
-    const bill = new Bill({
-      //_id: new mongoose.Types.ObjectId(),
-      dateCreated: date_ob,
-      deadlineDate: date_ob,
-      totalAmount: 0,
-      isPaid: false,
-      type: req.body.type,
-      user_id: req.body.user_id
-    });
-    bill.save().then(result => {
-      console.log(result)
-    }).catch(err => console.log(err));
-    res.status(200).json({
-      message: "handling request",
-      createdBill: bill
-    })
+  createBill(req, res);
 });
-
 
 router.post('/createDeposit', (req, res) => {
   let date_ob = new Date();
@@ -88,6 +84,7 @@ router.post('/createDeposit', (req, res) => {
     }],
       totalAmount: req.body.amount,
       isPaid: true,
+      isSent: true,
       type: "deposit",
       user_id: req.body.user_id
     });
@@ -100,29 +97,39 @@ router.post('/createDeposit', (req, res) => {
     })
 });
 
-router.post('/addFee/:id', (req, res) => {
-  Bill.updateOne({_id: req.params.id}, {$push: {fees: {description: req.body.description, amount: req.body.amount}}, $inc: {totalAmount: req.body.amount}}).exec().then(result => {
+//update this one
+router.get('/getList', (req, res) => {
+  Bill.find().exec().then(result => {
     res.status(200).send(result);
-  }).catch(err => console.log(err));
+})
+.catch(err => console.log(err));
 });
 
-
-
-//trinti, nebereikia atskiro objekto
-router.post('/createFee', (req, res) => {
-  const fee = new Fee({
-    description: req.body.description,
-    amount: req.body.amount,
-    billFee_id: req.body.billFee_id
-  });
-  fee.save().then(result => {
-    console.log(result)
-  }).catch(err => console.log(err));
-  res.status(200).json({
-    message: "handling request",
-    createdFee: fee
+router.get('/getList/:user', (req, res) => {
+  var user = null;
+  var room = null;
+  var dorm = null;
+  User.find({userName: req.params.user}).exec().then(result => {
+    user = result;
+    Room.find({_id: result[0].room_id}).exec().then(result => {
+      room = result[0].number;
+      Floor.find({_id: result[0].floor_id}).exec().then(result => {
+        Dorm.find({_id: result[0].dorm_id}).exec().then(result => {
+          dorm = result[0].dormAddress;
+          User.find({userName: req.params.user}).exec().then(result => {
+            Bill.find({user_id: result[0]._id, isSent: true}).select().exec().then(result => {
+              console.log(result);
+              res.status(200).send({roomNumber: room, dormAddress: dorm, user: user, result});
+          })
+        })
+      })
+    })
   })
+  .catch(err => console.log(err));
+  });
 });
+
+//add fee insertion to bill with isSent false
 
 
 module.exports = router;
