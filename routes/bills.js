@@ -19,10 +19,7 @@ router.use(express.static("public"));
 router.use(express.json());
 
 
-const calculateOrderAmount = (items) => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
-  // people from directly manipulating the amount on the client
+const calculateDepositAmount = (items) => {
   return Room.find({_id: items[0].room_id}).exec().then(result => {
     return result[0].roomPrice * 2;
   }).catch(err => console.log("error " + err));
@@ -30,7 +27,7 @@ const calculateOrderAmount = (items) => {
 
 router.post("/depositPayment", async (req, res) => {
   const { items } = req.body;
-  const calculatedAmount = await calculateOrderAmount(items);
+  const calculatedAmount = await calculateDepositAmount(items);
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
@@ -46,6 +43,24 @@ router.post("/depositPayment", async (req, res) => {
   });
 });
 
+
+router.post("/billPayment", async (req, res) => {
+  const { items } = req.body;
+  console.log("AMOUNTTTTTT: " + items[0].totalAmount);
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: items[0].totalAmount,
+    currency: "eur",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+    amount: paymentIntent.amount,
+  });
+});
 
 
 
@@ -130,6 +145,21 @@ router.get('/getList/:user', (req, res) => {
 });
 
 //add fee insertion to bill with isSent false
+
+
+
+router.post('/update', (req, res) => {
+  const id = req.body._id;
+  const updateOps = {};
+  for (const key of Object.keys(req.body)) {
+    updateOps[key] = req.body[key];
+  }
+  Bill.updateOne({_id: id}, {$set: updateOps}).exec().then(result => {
+    res.status(200).json(result);
+  }).catch(err => res.status(500).json({
+    error: err
+  }))
+});
 
 
 module.exports = router;

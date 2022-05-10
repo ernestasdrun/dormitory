@@ -67,11 +67,20 @@ router.post('/register', (req, res) => {
   });
   user.save().then(result => {
     console.log(result)
-  }).catch(err => console.log(err));
-  res.status(200).json({
-    message: "handling request",
-    createdUser: user
-  })
+    res.status(200).json({
+      message: "handling request",
+      createdUser: user,
+      duplicate: false
+    })
+  }).catch(err => {
+    console.log(err);
+    if ( err && err.code === 11000 ) {
+      res.status(500).json({
+        duplicate: true
+      });
+    }
+    res.status(500);
+  });
 });
 
 router.delete('/remove_:userName', (req, res) => {

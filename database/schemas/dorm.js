@@ -6,11 +6,13 @@ const connection = require("../mongo");
 const dorm = new mongoose.Schema({
     dormNumber: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     dormAddress: {
         type: String,
         required: true,
+        unique: true
     },
     dormFloors: {
         type: Number,
