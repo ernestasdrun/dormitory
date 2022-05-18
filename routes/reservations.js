@@ -27,9 +27,8 @@ router.post('/create/:user', (req, res) => {
 
         let date_ob = new Date();
         const reservation = new Reservation({
-          //_id: new mongoose.Types.ObjectId(),
-          creationDate: date_ob,
-          //startingDate: req.body.startingDate,
+          createdDate: date_ob,
+          startingDate: req.body.startingDate,
           //endDate: req.body.endDate,
           firstName: username,
           surname: usersur,

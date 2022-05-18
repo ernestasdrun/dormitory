@@ -17,6 +17,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 
 router.post('/create/:user/:reservation', (req, res) => {
+  let date_ob = new Date();
   User.find({_id: req.params.user}).exec().then(result => {
     const document = new Document({
       file: req.files.file.data,
@@ -24,6 +25,7 @@ router.post('/create/:user/:reservation', (req, res) => {
       isSigned: false,
       userName: result[0].firstName,
       userSurname: result[0].surname,
+      dateUploaded: date_ob,
       user_id:  req.params.user,
       reservation_id: req.params.reservation
     });
@@ -54,10 +56,10 @@ router.get('/getList/:user', (req, res) => {
 });
 });
 
-
 router.get('/getFullFile/:id', (req, res) => {
   Document.find({_id: req.params.id}).select('file').exec().then(result => {
-    res.status(200).send(result);
+    console.log(result[0].file);
+    res.status(200).send(result[0].file);
   })
   .catch(err => console.log("error " + err));
 });

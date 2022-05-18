@@ -7,10 +7,6 @@ const User = require('../schemas/user');
 const Room = require('../schemas/room');
 
 const reservation = new mongoose.Schema({
-    creationDate: {
-        type: Date,
-        required: true
-    },
     firstName: {
         type: String,
         required: true
@@ -19,8 +15,13 @@ const reservation = new mongoose.Schema({
         type: String,
         required: true
     },
+    createdDate: {
+        type: Date,
+        required: true
+    },
     startingDate: {
         type: Date,
+        required: true
     },
     endDate: {
         type: Date,

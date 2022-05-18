@@ -112,12 +112,45 @@ router.post('/createDeposit', (req, res) => {
     })
 });
 
-//update this one
+
+
 router.get('/getList', (req, res) => {
-  Bill.find().exec().then(result => {
-    res.status(200).send(result);
-})
-.catch(err => console.log(err));
+
+  var resJson = [];
+  var arrSize = null;
+  User.find({ room_id: { $ne: null } }).exec().then(result => {
+    arrSize = result.length;
+
+    for (var index = 0; index < result.length; index++) {
+      User.find({_id: result[index]._id}).exec().then(result => {
+        var user = result;
+
+        Room.find({_id: result[0].room_id}).exec().then(result => {
+          var room = result[0].number;
+
+          Floor.find({_id: result[0].floor_id}).exec().then(result => {
+            Dorm.find({_id: result[0].dorm_id}).exec().then(result => {
+              var dorm = result[0].dormAddress;
+
+              User.find({userName: user[0].userName}).exec().then(result => {
+                Bill.find({user_id: result[0]._id, isSent: true}).select().exec().then(result => {
+
+                  console.log("BILL: " + result[0]._id);
+                  resJson.push({roomNumber: room, dormAddress: dorm, user: user, result})
+
+                  if (resJson.length === arrSize) {
+                    res.status(200).send(resJson);
+                  }
+              })
+            })
+            })
+          })
+      })
+      })
+    }
+  })
+  .catch(err => console.log(err));
+
 });
 
 router.get('/getList/:user', (req, res) => {
