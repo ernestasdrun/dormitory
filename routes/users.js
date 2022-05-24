@@ -138,6 +138,14 @@ router.get('/info_:userName', (req, res) => {
   }))
 });
 
+router.get('/getUsers', (req, res) => {
+  User.find().select().exec().then(result => {
+    res.status(200).send(result);
+  }).catch(err => res.status(500).json({
+    error: err
+  }))
+});
+
 
 
 

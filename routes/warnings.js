@@ -11,7 +11,6 @@ router.use(cors({origin: 'http://localhost:3000'}));
 
 router.post('/create', (req, res) => {
     const warning = new Warning({
-      //_id: new mongoose.Types.ObjectId(),
       value: req.body.value, //number
       message: req.body.message, //string
       dateReceived: req.body.dateReceived, //date

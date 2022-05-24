@@ -36,7 +36,6 @@ router.post('/login_:userName', function(req, res, next) {
 
   router.post('/register', (req, res) => {
     const employee = new Employee({
-      //_id: new mongoose.Types.ObjectId(),
       firstName: req.body.firstName,
       surname: req.body.surname,
       userName: req.body.userName,

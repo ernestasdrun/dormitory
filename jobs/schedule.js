@@ -11,8 +11,6 @@ const Room = require("../database/schemas/room");
 router.use(cors({origin: 'http://localhost:3000'}));
 
 
-//0 0 0 1 * *
-//* * * * * *
 const job = nodeCron.schedule("0 0 0 1 * *", function generateBills() {
     // find users that have room and update bills for them
     User.find({ room_id: { $ne: null } }).exec().then(result => {

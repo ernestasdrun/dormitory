@@ -31,6 +31,12 @@ const user = new mongoose.Schema({
         type: Number,
         required: true
     },
+    reservedFrom: {
+        type: Date,
+    },
+    reservedTill: {
+        type: Date,
+    },
     notPaid: {
         type: Number,
         required: true

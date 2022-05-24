@@ -1,16 +1,13 @@
-const { Int32 } = require('mongodb');
 const mongoose = require('mongoose');
 
 const connection = require("../mongo");
 
 const User = require('../schemas/user');
-const Floor = require('../schemas/floor');
-const Dorm = require('../schemas/dorm');
+const Room = require('./room');
 
 const failure = new mongoose.Schema({
     image: {
-        type: Buffer,
-        required: true,
+        type: Buffer
     },
     status: {
         type: String,
@@ -20,14 +17,28 @@ const failure = new mongoose.Schema({
     type: {
         type: String,
         required: true,
+        enum: ["window_issues", "plumbing_issues", "electricity_issues", "other_issues"]
     },
     comment: {
         type: String,
         required: true,
     },
-    room_id: {
+    dateCreated: {
+        type: Date,
+        required: true,
+    },
+    dateResolved: {
+        type: Date,
+    },
+    user_id: {
         type: mongoose.Schema.ObjectId,
         ref: User,
+        required: true,
+        index: true
+    },
+    room_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: Room,
         required: true,
         index: true
     }

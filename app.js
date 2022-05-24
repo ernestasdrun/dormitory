@@ -16,6 +16,7 @@ var reservationsRouter = require('./routes/reservations');
 var roomsRouter = require('./routes/rooms');
 var warningsRouter = require('./routes/warnings');
 var paymentsRouter = require('./routes/payments');
+var adminRouter = require('./routes/admin');
 var scheduler = require('./jobs/schedule');
 
 var app = express();
@@ -42,6 +43,7 @@ app.use('/reservations', reservationsRouter);
 app.use('/rooms', roomsRouter);
 app.use('/warnings', warningsRouter);
 app.use('/payments', paymentsRouter);
+app.use('/admin', adminRouter);
 app.use('/schedule', scheduler);
 
 // catch 404 and forward to error handler

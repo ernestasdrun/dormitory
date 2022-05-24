@@ -14,7 +14,6 @@ router.use(cors({origin: 'http://localhost:3000'}));
 
 router.post('/create', (req, res) => {
     const floor = new Floor({
-      //_id: new mongoose.Types.ObjectId(),
       floor: req.body.floor,
       floorRooms: req.body.floorRooms,
       dorm_id: req.body.dorm_id

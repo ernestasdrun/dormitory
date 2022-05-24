@@ -1,9 +1,7 @@
-const { Int32 } = require('mongodb');
 const mongoose = require('mongoose');
 
 const connection = require("../mongo");
 const User = require('../schemas/user');
-const BillFee = require('../schemas/billFee');
 
 const bill = new mongoose.Schema({
     dateCreated: {

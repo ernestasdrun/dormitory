@@ -81,7 +81,9 @@ router.post('/update', (req, res) => {
 
 
 router.post("/upload", (req, res) => {
-  const newpath = __dirname + "/files/";
+  console.log(__dirname+ "/files/");
+  
+  const newpath = __dirname;
   const file = req.files.file;
   const filename = file.name;
  

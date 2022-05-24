@@ -41,7 +41,9 @@ router.post('/create/:user', (req, res) => {
           user_id: userId
         });
         reservation.save().then(result => {
-          console.log(result)
+          User.updateOne({_id: userId}, {reservedFrom: req.body.startingDate, reservedTill: req.body.endDate}).exec().then(result => {
+            console.log(result)
+          })
         }).catch(err => console.log(err));
         res.status(200).json({
           message: "handling request",
@@ -52,6 +54,45 @@ router.post('/create/:user', (req, res) => {
   })
   }).catch(err => console.log(err));
   });
+
+// router.post('/create/:user', (req, res) => {
+//   User.find({userName: req.params.user}).exec().then(result => {
+//   const userId = result[0]._id;
+//   const username = result[0].firstName;
+//   const usersur = result[0].surname;
+//   Dorm.find({dormNumber: req.body.dorm}).exec().then(result => {
+//     const dormN = result[0].dormNumber;
+//     Floor.find({dorm_id: result[0]._id, floor: req.body.floor}).exec().then(result => {      
+//       const floorN = result[0].floor;
+//       Room.find({floor_id: result[0]._id, number: req.body.room}).exec().then(result => {
+
+//         let date_ob = new Date();
+//         const reservation = new Reservation({
+//           createdDate: date_ob,
+//           startingDate: req.body.startingDate,
+//           //endDate: req.body.endDate,
+//           firstName: username,
+//           surname: usersur,
+//           status: "Nepatvirtinta",
+//           type:"firstTime",
+//           roomNum: result[0].number,
+//           floorNum: floorN,
+//           dormNum: dormN,
+//           room_id: result[0]._id,
+//           user_id: userId
+//         });
+//         reservation.save().then(result => {
+//           console.log(result)
+//         }).catch(err => console.log(err));
+//         res.status(200).json({
+//           message: "handling request",
+//           createdReserv: reservation
+//         })
+//     })
+//   })
+//   })
+//   }).catch(err => console.log(err));
+//   });
 
   router.post('/getList/:user', (req, res) => {
     User.find({userName: req.params.user}).exec().then(result => {
