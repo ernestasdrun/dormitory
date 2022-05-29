@@ -21,7 +21,7 @@ router.use(express.json());
 
 const calculateDepositAmount = (items) => {
   return Room.find({_id: items[0].room_id}).exec().then(result => {
-    return result[0].roomPrice * 2;
+    return Math.round(result[0].roomPrice * 2 * 100);
   }).catch(err => console.log("error " + err));
 };
 
@@ -46,11 +46,11 @@ router.post("/depositPayment", async (req, res) => {
 
 router.post("/billPayment", async (req, res) => {
   const { items } = req.body;
-  console.log("AMOUNTTTTTT: " + items[0].totalAmount);
+  console.log("AMOUNTTTTTT: " + Math.round(items[0].totalAmount * 100));
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: items[0].totalAmount,
+    amount: Math.round(items[0].totalAmount * 100),
     currency: "eur",
     automatic_payment_methods: {
       enabled: true,
